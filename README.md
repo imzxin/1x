@@ -29,7 +29,7 @@ URL `http://api.1x.hk/market/symbol-thumb`
 
 ```
 # Request
-GET https://www.okex.com/api/v1/ticker.do?symbol=ltc_btc
+GET http://api.1x.hk/market/symbol-thumb
 # Response
 [
     {
