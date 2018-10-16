@@ -340,6 +340,62 @@ GET http://api.1x.hk/market/history?symbol=BTC%2FUSDT&from=1539087024000&to=1539
 
 用于1X币币交易  
 
+1. POST /uc/login  用户登陆获取token
+
+URL `http://api.1x.hk/uc/login`      
+
+示例  
+
+```
+# Request
+POST http://api.1x.hk/uc/login
+# Response
+{
+    "data": {
+        "username": "allen",
+        "location": {
+            "country": "中国",
+            "province": null,
+            "city": null,
+            "district": null
+        },
+        "memberLevel": 2,
+        "token": "xxxxxxxxx",
+        "realName": "xxxxx",
+        "country": {
+            "zhName": "中国",
+            "enName": "China",
+            "areaCode": "86",
+            "language": "zh_CN",
+            "localCurrency": "CNY",
+            "sort": 0
+        },
+        "avatar": "xxxx",
+        "promotionCode": "U000001q7",
+        "id": 1,
+        "promotionPrefix": "www.1x.hk",
+        "signInAbility": true,
+        "signInActivity": false
+    },
+    "code": 0,
+    "message": "SUCCESS"
+}
+```
+
+返回值说明   
+
+```
+ token:个人信息、发单、撤单、吃单等需要
+```
+
+请求参数    
+
+|参数名|   参数类型|   必填| 描述|
+| :-----    | :-----   | :-----    | :-----   |
+|username|String|是|用户名称|
+|password|String|是|用户密码|
+
+
 1. POST /uc/asset/wallet    获取用户资产数据
 
 URL `http://api.1x.hk/uc/asset/wallet`      
@@ -351,37 +407,65 @@ URL `http://api.1x.hk/uc/asset/wallet`
 POST http://api.1x.hk/uc/asset/wallet
 # Response
 {
-    "info": {
-        "funds": {
-            "free": {
-                "btc": "0",
-                "ltc": "0",
-                "eth": "0"
+    "data": [
+        {
+            "id": 175,
+            "memberId": 1,
+            "coin": {
+                "name": "1X",
+                "nameCn": "1X",
+                "unit": "1X",
+                "status": 0,
+                "minTxFee": 0,
+                "cnyRate": 1,
+                "maxTxFee": 0.0005,
+                "usdRate": 1,
+                "sgdRate": 0,
+                "enableRpc": 1,
+                "sort": 11,
+                "canWithdraw": 1,
+                "canRecharge": 1,
+                "canTransfer": 1,
+                "canAutoWithdraw": 1,
+                "withdrawThreshold": 100,
+                "minWithdrawAmount": 5,
+                "maxWithdrawAmount": 100,
+                "isPlatformCoin": 1,
+                "hasLegal": false,
+                "allBalance": null,
+                "coldWalletAddress": "0x7de593fa4375f6b41f8321f460b8ece64b749b81",
+                "hotAllBalance": null,
+                "minerFee": 0,
+                "withdrawScale": 4,
+                "minRechargeAmount": 0,
+                "masterAddress": null,
+                "maxDailyWithdrawRate": 0
             },
-            "freezed": {
-                "btc": "0",
-                "ltc": "0",
-                "eth": "0"
-            }
-        }
-    },
-    "result": true
+            "balance": 0,
+            "frozenBalance": 0,
+            "address": "0x1957c1d6d81b1647336399d771e5fee174d5c430",
+            "isLock": 0
+        },
+        ...
+    ],
+    "code": 0,
+    "message": "success"
 }
 ```
 
 返回值说明   
 
 ```
-free:账户余额
-freezed:账户冻结余额
+coin:币种信息
+balance:账户余额
+frozenBalance：账户冻结余额
 ```
 
 请求参数    
 
 |参数名|   参数类型|   必填| 描述|
 | :-----    | :-----   | :-----    | :-----   |
-|api_key|String|是|用户申请的apiKey|
-|sign|String|是|请求参数的签名|
+|x-auth-token|String|是|token header 参数 |
 
 2. POST /exchange/order/add    下单交易
 
@@ -407,6 +491,7 @@ data:订单ID
 
 |参数名|   参数类型|   必填| 描述|
 | :-----    | :-----   | :-----    | :-----   |
+|x-auth-token|String|是|token header 参数 |
 |symbol|String|是|币对如SCEC/ETH|
 |type|String|是|交易类型：限价交易(LIMIT_PRICE) 市价交易(MARKET_PRICE)|
 |price|Double|否|下单价格 市价卖单不传price|
@@ -437,6 +522,7 @@ code:0 撤单请求成功，等待系统执行撤单；false撤单失败(用于�
 
 |参数名|   参数类型|   必填| 描述|
 | :-----    | :-----   | :-----    | :-----   |
+|x-auth-token|String|是|token header 参数 |
 |E153917558982779 |String|是|订单编号|
 
 
