@@ -396,7 +396,7 @@ POST http://api.1x.hk/uc/login
 |password|String|是|用户密码|
 
 
-1. POST /uc/asset/wallet    获取用户资产数据
+2. POST /uc/asset/wallet    获取用户资产数据
 
 URL `http://api.1x.hk/uc/asset/wallet`      
 
@@ -467,7 +467,7 @@ frozenBalance：账户冻结余额
 | :-----    | :-----   | :-----    | :-----   |
 |x-auth-token|String|是|token header 参数 |
 
-2. POST /exchange/order/add    下单交易
+3. POST /exchange/order/add    下单、吃单交易
 
 URL `http://api.1x.hk/exchange/order/add`   
 
@@ -498,7 +498,103 @@ data:订单ID
 |amount|Double|否|交易数量 市价买单不传amount,市价买单需传price作为买入总金额|
 |direction|String|是|下单类型 卖（SELL） 买（BUY）|
 
-3. POST /exchange/order/cancel/E153917558982779    撤销订单
+
+4. POST /exchange/order/current 当前委托
+
+URL `http://api.1x.hk/exchange/order/current`   
+
+示例  
+
+```
+# Request
+POST http://api.1x.hk/exchange/order/current
+# Response
+{
+    "content": [
+        {
+            "orderId": "E153974403259923",
+            "memberId": 1,
+            "type": "LIMIT_PRICE",
+            "amount": 256,
+            "symbol": "SCEC/ETH",
+            "tradedAmount": 0,
+            "turnover": 0,
+            "coinSymbol": "SCEC",
+            "baseSymbol": "ETH",
+            "status": "TRADING",
+            "direction": "SELL",
+            "price": 0.00046,
+            "time": 1539744032599,
+            "completedTime": null,
+            "canceledTime": null,
+            "marginTrade": 0,
+            "detail": [],
+            "amountStr": "256.00000000",
+            "priceStr": "0.00046000",
+            "completed": false
+        },
+        {
+            "orderId": "E153917545472286",
+            "memberId": 1,
+            "type": "LIMIT_PRICE",
+            "amount": 1,
+            "symbol": "SCEC/ETH",
+            "tradedAmount": 0,
+            "turnover": 0,
+            "coinSymbol": "SCEC",
+            "baseSymbol": "ETH",
+            "status": "TRADING",
+            "direction": "SELL",
+            "price": 0.0003,
+            "time": 1539175454722,
+            "completedTime": null,
+            "canceledTime": null,
+            "marginTrade": 0,
+            "detail": [],
+            "amountStr": "1.00000000",
+            "priceStr": "0.00030000",
+            "completed": false
+        }
+    ],
+    "last": true,
+    "totalElements": 2,
+    "totalPages": 1,
+    "first": true,
+    "numberOfElements": 2,
+    "sort": [
+        {
+            "direction": "DESC",
+            "property": "time",
+            "ignoreCase": false,
+            "nullHandling": "NATIVE",
+            "ascending": false,
+            "descending": true
+        }
+    ],
+    "size": 100,
+    "number": 0
+}
+
+```
+
+返回值说明   
+
+```
+content:当前委托订单数据
+orderId:订单id
+```
+
+请求参数    
+
+|参数名|   参数类型|   必填| 描述|
+| :-----    | :-----   | :-----    | :-----   |
+|x-auth-token|String|是|token header 参数 |
+|pageNo |int|是|当前页码 ，默认0|
+|pageSize |int|是|每页条数，默认100|
+|symbol |String|是|交易对 ，SCEC/ETH|
+
+
+5. POST /exchange/order/cancel/E153917558982779    撤销订单
 
 URL `http://api.1x.hk/exchange/order/cancel/E153917558982779`   
 
@@ -526,5 +622,105 @@ code:0 撤单请求成功，等待系统执行撤单；false撤单失败(用于�
 |E153917558982779 |String|是|订单编号|
 
 
+6. POST /exchange/order/history 委托历史
 
-未完待续。。。
+URL `http://api.1x.hk/exchange/order/history`   
+
+示例  
+
+```
+# Request
+POST http://api.1x.hk/exchange/order/history
+# Response
+{
+    "content": [
+        {
+            "orderId": "E153974342409184",
+            "memberId": 1,
+            "type": "LIMIT_PRICE",
+            "amount": 1,
+            "symbol": "SCEC/ETH",
+            "tradedAmount": 1,
+            "turnover": 0.0003,
+            "coinSymbol": "SCEC",
+            "baseSymbol": "ETH",
+            "status": "COMPLETED",
+            "direction": "BUY",
+            "price": 0.0003,
+            "time": 1539743424091,
+            "completedTime": 1539743424106,
+            "canceledTime": null,
+            "marginTrade": 0,
+            "detail": [
+                {
+                    "orderId": "E153974342409184",
+                    "price": 0.0003,
+                    "amount": 1,
+                    "turnover": 0.0003,
+                    "fee": 0.003,
+                    "time": 1539743424108
+                }
+            ],
+            "amountStr": "1.00000000",
+            "priceStr": "0.00030000",
+            "completed": true
+        },
+        {
+            "orderId": "E153917558982779",
+            "memberId": 1,
+            "type": "MARKET_PRICE",
+            "amount": 100,
+            "symbol": "SCEC/ETH",
+            "tradedAmount": 0,
+            "turnover": 0,
+            "coinSymbol": "SCEC",
+            "baseSymbol": "ETH",
+            "status": "CANCELED",
+            "direction": "SELL",
+            "price": 0,
+            "time": 1539175589827,
+            "completedTime": null,
+            "canceledTime": 1539175841341,
+            "marginTrade": 0,
+            "detail": [],
+            "amountStr": "100.00000000",
+            "priceStr": "0.00000000",
+            "completed": true
+        }
+    ],
+    "last": true,
+    "totalElements": 2,
+    "totalPages": 1,
+    "first": true,
+    "numberOfElements": 2,
+    "sort": [
+        {
+            "direction": "DESC",
+            "property": "time",
+            "ignoreCase": false,
+            "nullHandling": "NATIVE",
+            "ascending": false,
+            "descending": true
+        }
+    ],
+    "size": 10,
+    "number": 0
+}
+
+```
+
+返回值说明   
+
+```
+content:委托订单历史数据
+orderId:订单id
+```
+
+请求参数    
+
+|参数名|   参数类型|   必填| 描述|
+| :-----    | :-----   | :-----    | :-----   |
+|x-auth-token|String|是|token header 参数 |
+|pageNo |int|是|当前页码 ，默认0|
+|pageSize |int|是|每页条数，默认100|
+|symbol |String|是|交易对 ，SCEC/ETH|
