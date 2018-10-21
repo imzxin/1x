@@ -7,7 +7,7 @@
 ## 请求交互    
 
 REST访问的根URL：`http://api.1x.hk`     
-所有请求基于Http协议，请求头信息中contentType需要统一设置为：`application/json;charset=UTF-8`    
+所有请求基于Http协议，请求头信息中contentType需要设置为：`application/json;charset=UTF-8`，部分接口特殊，请注意接口说明    
     
 请求交互说明    
 1. 请求参数：根据接口请求参数规定进行参数封装。    
@@ -340,7 +340,7 @@ GET http://api.1x.hk/market/history?symbol=BTC%2FUSDT&from=1539087024000&to=1539
 
 用于1X币币交易  
 
-1. POST /uc/login  用户登陆获取token
+1. POST /uc/login  用户登陆获取token ， 表单提交：form-data 形式
 
 URL `http://api.1x.hk/uc/login`      
 
